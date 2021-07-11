@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 public class LoadingAnimator : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class LoadingAnimator : MonoBehaviour
     private GameObject circleSprite;
 
     private float elapsedTime;
+
+    static string requrl = "http://kaitgamdev.sakura.ne.jp/00semi/samplephp/getid.php";
 
     // Start is called before the first frame update
     void Start()
@@ -42,8 +45,23 @@ public class LoadingAnimator : MonoBehaviour
             circleSprite.GetComponent<CircleSprite>().SetMagnitude(elapsedTime * 1.0f);
             yield return null;
         }
-        // 3秒待つ
-        yield return new WaitForSeconds(3);
+
+        // HTTP Get Request を送ってレスポンスを得る
+        UnityWebRequest www = UnityWebRequest.Get(requrl);
+        yield return www.SendWebRequest();
+
+        // エラーかどうかの判定
+        if (www.isNetworkError || www.isHttpError)
+        {
+            Debug.Log(www.error);
+        } else
+        {
+            // エラーでない場合は受け取ったテキストを取得
+            Debug.Log(www.downloadHandler.text);
+        }
+
+        // 1秒待つ
+        yield return new WaitForSeconds(1.0f);
 
         // 最後の1秒で段々小さくなる
         elapsedTime = 0.0f; // 経過時間をリセット
