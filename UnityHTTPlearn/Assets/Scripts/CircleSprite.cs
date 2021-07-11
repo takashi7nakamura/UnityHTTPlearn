@@ -10,11 +10,19 @@ public class CircleSprite : MonoBehaviour
 
     private float radius; // 半径
 
+    private float magnitude; // 倍率
+
     // Start is called before the first frame update
     void Start()
     {
+        // 経過時間を初期化
         elapsedTime = 0.0f;
-        radius = maxAmplitude; 
+
+        // 初期の倍率
+        magnitude = 0.0f;
+
+        // 半径
+        radius = maxAmplitude * magnitude; 
     }
 
     // Update is called once per frame
@@ -29,5 +37,14 @@ public class CircleSprite : MonoBehaviour
         Vector3 cpos = new Vector3( Mathf.Sin(rad) * radius, Mathf.Cos(rad) * radius, 1.0f );
         transform.position = cpos;
 
+    }
+
+    // 倍率のパラメータをセットする
+    // mag = 0.0 ～ 1.0 で指定する
+    public void SetMagnitude(float mag)
+    {
+        magnitude = mag;
+
+        radius = maxAmplitude * magnitude;
     }
 }
