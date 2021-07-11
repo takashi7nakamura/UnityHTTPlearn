@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.UI;
+
 
 public class LoadingAnimator : MonoBehaviour
 {
@@ -13,18 +15,32 @@ public class LoadingAnimator : MonoBehaviour
 
     static string requrl = "http://kaitgamdev.sakura.ne.jp/00semi/samplephp/getid.php";
 
+    private int idFromServer;
+    static string keyForId = "IDFromServer";
+
+
     // Start is called before the first frame update
     void Start()
     {
         // 経過時間を初期化
         elapsedTime = 0.0f;
- 
-        // CircleSprite を一つ生成
-        circleSprite = Instantiate(circleSpritePrefab);
 
-        // コルーチンを実行
-        StartCoroutine("LoadingAnimationSequence");
-        
+        // ローカルに保存されているID情報を取得する
+        idFromServer = PlayerPrefs.GetInt(keyForId, -1);
+
+        // IDがローカルにまだ保存されていない場合
+        if (idFromServer == -1)
+        {
+            // CircleSprite を一つ生成
+            circleSprite = Instantiate(circleSpritePrefab);
+
+            // コルーチンを実行
+            StartCoroutine("LoadingAnimationSequence");
+        } else
+        {
+            Debug.Log("ID(in PlayerPrefs)=" + idFromServer);
+        }
+
     }
 
     // Update is called once per frame
@@ -58,10 +74,17 @@ public class LoadingAnimator : MonoBehaviour
         {
             // エラーでない場合は受け取ったテキストを取得
             Debug.Log(www.downloadHandler.text);
+
+            // テキストを int 型に変換して ID を取得
+            idFromServer = int.Parse(www.downloadHandler.text);
+
+            // ローカルに保存する
+            PlayerPrefs.SetInt(keyForId,idFromServer);
+            PlayerPrefs.Save();
         }
 
         // 1秒待つ
-        yield return new WaitForSeconds(1.0f);
+        // yield return new WaitForSeconds(1.0f);
 
         // 最後の1秒で段々小さくなる
         elapsedTime = 0.0f; // 経過時間をリセット
