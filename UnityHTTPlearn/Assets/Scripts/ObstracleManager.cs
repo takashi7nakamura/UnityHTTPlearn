@@ -18,6 +18,23 @@ public class ObstracleManager : MonoBehaviour
         
     }
 
+    // すべてのObstacleを消すメソッド
+    public void DestroyAll()
+    {
+        GameObject[] taggedObjects;
+
+        // シーン上にある全てのタグが"Obstacle"のオブジェクトを探す
+        taggedObjects = GameObject.FindGameObjectsWithTag("Obstacle");
+
+        // 見つかったすべての GameObject に対して
+        for (int i = 0; i < taggedObjects.Length ; i++)
+        {
+            // GameObjectを Destroy する 
+            Destroy(taggedObjects[i]);
+        }
+    }
+
+    // コルーチンで一定時間ごとに障害物を生成する
     IEnumerator GenerateObstacles()
     {
         for (; ; )

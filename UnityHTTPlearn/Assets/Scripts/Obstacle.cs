@@ -28,4 +28,10 @@ public class Obstacle : MonoBehaviour
     {
         GetComponent<Rigidbody2D>().velocity = new Vector2(vx, vy);
     }
+
+    private void OnBecameInvisible()
+    {
+        Destroy(gameObject);
+        Debug.Log("Obstacle Destroyed");
+    }
 }

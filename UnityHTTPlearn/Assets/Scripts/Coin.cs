@@ -16,6 +16,13 @@ public class Coin : MonoBehaviour
         
     }
 
+    // 画面外に消えたらオブジェクトを破棄する
+    private void OnBecameInvisible()
+    {
+        Destroy(gameObject);
+        Debug.Log("Obstacle Destroyed");
+    }
+
     // オブジェクトの位置を設定するメソッド
     public void SetPosition(float x, float y)
     {

@@ -13,6 +13,12 @@ public class Player : MonoBehaviour
     // 速度(定数)
     static public float moveVelocity = 4.0f;
 
+    // 移動範囲
+    static float minX = -7.0f;
+    static float maxX = 7.0f;
+    static float minY = -4.4f;
+    static float maxY = 4.4f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -41,6 +47,10 @@ public class Player : MonoBehaviour
         // 速度から次の位置を計算してセットする
         // 新しい位置 = 現在位置 + 速度ベクトル* 経過時間
         Vector3 newpos = transform.position + nv * Time.deltaTime * moveVelocity;
+
+        // 移動範囲を制限する
+        newpos.x = Mathf.Clamp(newpos.x, minX, maxX);
+        newpos.y = Mathf.Clamp(newpos.y, minY, maxY);
 
         // ワールド座標に変換されたマウス座標を代入する
         transform.position = newpos;

@@ -18,6 +18,22 @@ public class CoinManager : MonoBehaviour
         
     }
 
+    // すべてのCoinを消すメソッド
+    public void DestroyAll()
+    {
+        GameObject[] taggedObjects;
+
+        // シーン上にある全てのタグが"Obstacle"のオブジェクトを探す
+        taggedObjects = GameObject.FindGameObjectsWithTag("Coin");
+
+        // 見つかったすべての GameObject に対して
+        for (int i = 0; i < taggedObjects.Length; i++)
+        {
+            // GameObjectを Destroy する 
+            Destroy(taggedObjects[i]);
+        }
+    }
+
     IEnumerator GenerateCoins()
     {
         for (; ; )
