@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObstracleManager : MonoBehaviour
+public class ObstacleManager : MonoBehaviour
 {
     public GameObject obstaclePrefab;
 

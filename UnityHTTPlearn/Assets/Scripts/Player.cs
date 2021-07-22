@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    public GameObject gm; // ゲームマネージャ
+
     // 位置座標
     private Vector3 mousePosition;
 
@@ -65,6 +67,8 @@ public class Player : MonoBehaviour
         {
             // 当たったコインを消す
             collision.gameObject.SetActive(false);
+            // スコアを加算する
+            gm.GetComponent<GameManager>().AddScore(1);
         }
 
 

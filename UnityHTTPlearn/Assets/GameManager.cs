@@ -11,6 +11,10 @@ public class GameManager : MonoBehaviour
     public GameObject player;
 
     public GameObject clickStartText;
+    public GameObject scoreText;
+
+    private int gameScore; //ゲームのスコア
+
 
     public enum GAME_STATE
     {
@@ -21,6 +25,8 @@ public class GameManager : MonoBehaviour
 
     private GAME_STATE state;
 
+    private float elapsedTime;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -30,10 +36,13 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // 経過時間の計算
+        elapsedTime += Time.deltaTime;
 
+        // ゲームの状態によっての処理変更
         switch (state)
         {
-            case GAME_STATE.GAME_TITLE:
+            case GAME_STATE.GAME_TITLE: // タイトル表示状態
                 // マウスボタンが押されたら
                 if (Input.GetMouseButtonDown(0))
                 {
@@ -41,13 +50,13 @@ public class GameManager : MonoBehaviour
                     InitGameState();
                 }
                 break;
-            case GAME_STATE.GAME_GAME:
+            case GAME_STATE.GAME_GAME: // ゲームプレイ中
                 if (player.activeSelf == false)
                 {
                     InitResultState();
                 }
                 break;
-            case GAME_STATE.GAME_RESULT:
+            case GAME_STATE.GAME_RESULT: // リザルト表示中
                 if (Input.GetMouseButtonDown(0))
                 {
                     // ゲームステートへ
@@ -58,6 +67,16 @@ public class GameManager : MonoBehaviour
                 break;
         }
 
+    }
+
+    // スコアが加算された時の処理
+    public void AddScore(int add)
+    {
+        // ゲームのスコア加算時
+        gameScore += add;
+
+        // スコア表示のテキストを更新する
+        scoreText.GetComponent<Text>().text = gameScore.ToString();
     }
 
     // タイトル状態に入った時の初期化処理
@@ -88,6 +107,9 @@ public class GameManager : MonoBehaviour
         // Player位置の表示を開始する
         player.SetActive(true);
 
+        // スコアは0点にする
+        gameScore = 0;
+
         InitGameObjects();
     }
 
@@ -99,7 +121,7 @@ public class GameManager : MonoBehaviour
 
     private void InitGameObjects()
     {
-        obstacleManager.GetComponent<ObstracleManager>().DestroyAll();
+        obstacleManager.GetComponent<ObstacleManager>().DestroyAll();
         coinManager.GetComponent<CoinManager>().DestroyAll();
 
     }
