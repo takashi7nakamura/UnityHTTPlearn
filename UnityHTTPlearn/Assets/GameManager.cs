@@ -103,12 +103,15 @@ public class GameManager : MonoBehaviour
 
         // Playerの位置は初期位置(0,0)に設定する
         player.transform.position = new Vector3(0.0f, 0.0f, 0.0f);
+        // アニメーション等のパラメータをリセットする
+        player.GetComponent<Player>().Reset();
 
         // Player位置の表示を開始する
         player.SetActive(true);
 
         // スコアは0点にする
         gameScore = 0;
+        scoreText.GetComponent<Text>().text = gameScore.ToString();
 
         InitGameObjects();
     }
