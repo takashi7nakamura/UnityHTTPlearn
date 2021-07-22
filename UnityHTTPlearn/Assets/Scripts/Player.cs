@@ -30,12 +30,21 @@ public class Player : MonoBehaviour
     // 死んだ状態かのフラグ
     bool isDead;
 
+    // 効果音関連
+    public AudioClip seCoin; //コイン取得時の音
+    public AudioClip seDead; //死んだ時の音
+
+    AudioSource audioSource;
+
     // Start is called before the first frame update
     void Start()
     {
         elapsedTime = 0.0f;
         // 死んだかどうかのフラグ
         isDead = false;
+
+        // AudioSourceのコンポーネントを取得する
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -87,6 +96,8 @@ public class Player : MonoBehaviour
             collision.gameObject.SetActive(false);
             // スコアを加算する
             gm.GetComponent<GameManager>().AddScore(1);
+            // コイン取得時の効果音を鳴らす
+            audioSource.PlayOneShot(seCoin);
         }
 
 
@@ -117,6 +128,8 @@ public class Player : MonoBehaviour
     {
         elapsedTime = 0.0f; // 経過時間を初期化
         isDead = true; // 死んでます
+        //死んだ時のジングルを鳴らす
+        audioSource.PlayOneShot(seDead);
 
         while (elapsedTime < 0.8f)
         {

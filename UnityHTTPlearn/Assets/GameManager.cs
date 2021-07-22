@@ -15,6 +15,11 @@ public class GameManager : MonoBehaviour
 
     private int gameScore; //ゲームのスコア
 
+    // 音関連
+    AudioSource audioSource;
+
+    public AudioClip seStart; // スタート時ジングル
+
 
     public enum GAME_STATE
     {
@@ -30,6 +35,9 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // AudioSourceのコンポーネントを取得する
+        audioSource = GetComponent<AudioSource>();
+
         InitTitleState();
     }
 
@@ -114,6 +122,9 @@ public class GameManager : MonoBehaviour
         scoreText.GetComponent<Text>().text = gameScore.ToString();
 
         InitGameObjects();
+
+        // 開始時効果音を鳴らす
+        // audioSource.PlayOneShot(seStart);
     }
 
     // リザルト状態に入った時の初期化処理

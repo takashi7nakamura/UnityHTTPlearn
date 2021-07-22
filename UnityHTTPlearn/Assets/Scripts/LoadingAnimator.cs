@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 
 public class LoadingAnimator : MonoBehaviour
@@ -39,6 +40,7 @@ public class LoadingAnimator : MonoBehaviour
         } else
         {
             Debug.Log("ID(in PlayerPrefs)=" + idFromServer);
+            SceneManager.LoadScene("GameScene");
         }
 
     }
@@ -95,5 +97,7 @@ public class LoadingAnimator : MonoBehaviour
         }
 
         Debug.Log("Done");
+        // 終了した時にゲームシーンを呼ぶ
+        SceneManager.LoadScene("GameScene");
     }
 }
