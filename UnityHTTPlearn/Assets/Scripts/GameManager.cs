@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Networking;
+
 
 public class GameManager : MonoBehaviour
 {
@@ -20,6 +22,12 @@ public class GameManager : MonoBehaviour
 
     public AudioClip seStart; // スタート時ジングル
 
+    // ログ記録用WebサーバのURL
+    static string reqUrlBase = "http://kaitgamdev.sakura.ne.jp/00semi/samplephp/recordlog.php?id={0}&score={1}";
+
+    // PlayerPrefsで取得するClientID
+    private int idFromServer;
+    static string keyForId = "IDFromServer";
 
     public enum GAME_STATE
     {
@@ -37,6 +45,9 @@ public class GameManager : MonoBehaviour
     {
         // AudioSourceのコンポーネントを取得する
         audioSource = GetComponent<AudioSource>();
+
+        // IDをPlayerPrefsで取得する
+        idFromServer = PlayerPrefs.GetInt(keyForId, -1);
 
         InitTitleState();
     }
@@ -131,6 +142,9 @@ public class GameManager : MonoBehaviour
     private void InitResultState()
     {
         state = GAME_STATE.GAME_RESULT;
+
+        // サーバにログ記録するコルーチンを起動する
+        StartCoroutine(RecordGameLogOnServer(gameScore));
     }
 
     private void InitGameObjects()
@@ -139,5 +153,30 @@ public class GameManager : MonoBehaviour
         coinManager.GetComponent<CoinManager>().DestroyAll();
 
     }
+
+    // ゲームの結果をWebサーバに記録するコルーチン
+    IEnumerator RecordGameLogOnServer(int score)
+    {
+        // Get Method を使ったURLを作成する
+        string requrl = string.Format(reqUrlBase, idFromServer.ToString(), score.ToString());
+
+        Debug.Log("reqURL=" + requrl);
+
+        // Webサーバに HTTP Get Request を送ってレスポンスを得る
+        UnityWebRequest www = UnityWebRequest.Get(requrl);
+        yield return www.SendWebRequest();
+
+        // エラーかどうかの判定
+        if (www.isNetworkError || www.isHttpError)
+        {
+            Debug.Log(www.error);
+        } else
+        {
+            // エラーでない場合
+            // テキストを取得
+            Debug.Log(www.downloadHandler.text);
+        }
+    }
+
 
 }

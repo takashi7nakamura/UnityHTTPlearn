@@ -32,6 +32,6 @@ public class Obstacle : MonoBehaviour
     private void OnBecameInvisible()
     {
         Destroy(gameObject);
-        Debug.Log("Obstacle Destroyed");
+        // Debug.Log("Obstacle Destroyed");
     }
 }

@@ -20,7 +20,7 @@ public class Coin : MonoBehaviour
     private void OnBecameInvisible()
     {
         Destroy(gameObject);
-        Debug.Log("Obstacle Destroyed");
+        // Debug.Log("Obstacle Destroyed");
     }
 
     // オブジェクトの位置を設定するメソッド
